@@ -16,19 +16,19 @@ var defaultHandler = function (request, reply) {
 };
 
 
-var defaultValidateFunc = function (credentials, callback) {
+var defaultvalidatedFunc = function (credentials, callback) {
 
     return callback(null, { credentials: credentials });
 };
 
 
-var alwaysErrorValidateFunc = function (credentials, callback) {
+var alwaysErrorvalidatedFunc = function (credentials, callback) {
 
     return callback({ Error:'Error' }, null);
 };
 
 
-var noCredentialsValidateFunc = function (credentials, callback) {
+var noCredentialsvalidatedFunc = function (credentials, callback) {
 
     return callback(null, null);
 };
@@ -47,7 +47,7 @@ before(function (done){
         server.auth.strategy('default', 'parse-access-token', {
             parse_rest_api_key: 'hwilaVidMinmila',
             parse_app_id: 'hemligt',
-            validateFunc: defaultValidateFunc
+            validatedFunc: defaultvalidatedFunc
         });
 
         server.auth.strategy('no_valid_function', 'parse-access-token', {
@@ -58,13 +58,13 @@ before(function (done){
         server.auth.strategy('with_error', 'parse-access-token', {
             parse_rest_api_key: 'hwilaVidMinmila',
             parse_app_id: 'hemligt',
-            validateFunc: alwaysErrorValidateFunc
+            validatedFunc: alwaysErrorvalidatedFunc
         });
 
         server.auth.strategy('missing_credential', 'parse-access-token', {
             parse_rest_api_key: 'hwilaVidMinmila',
             parse_app_id: 'hemligt',
-            validateFunc: noCredentialsValidateFunc
+            validatedFunc: noCredentialsvalidatedFunc
         });
 
         server.route([
