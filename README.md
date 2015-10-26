@@ -1,13 +1,13 @@
-# Hapi auth Parse token
-[![Build Status](https://travis-ci.org/johnbrett/hapi-auth-bearer-token.svg?branch=master)](https://travis-ci.org/johnbrett/hapi-auth-bearer-token) [![Dependency Status](https://david-dm.org/johnbrett/hapi-auth-bearer-token.svg)](https://david-dm.org/johnbrett/hapi-auth-bearer-token) [![Test Coverage](https://codeclimate.com/github/johnbrett/hapi-auth-bearer-token/badges/coverage.svg)](https://codeclimate.com/github/johnbrett/hapi-auth-bearer-token)
+# Parse session token validation for Hapi
+[![Build Status](https://travis-ci.org/ejeklint/hapi-parse-session-token.svg?branch=master)](https://travis-ci.org/ejeklint/hapi-parse-session-token) [![Code Climate](https://codeclimate.com/github/ejeklint/hapi-parse-session-token/badges/gpa.svg)](https://codeclimate.com/github/ejeklint/hapi-parse-session-token) [![Test Coverage](https://codeclimate.com/github/ejeklint/hapi-parse-session-token/badges/coverage.svg)](https://codeclimate.com/github/ejeklint/hapi-parse-session-token/coverage)
 
-Lead Maintainer: [John Brett](https://github.com/johnbrett)
+Lead Maintainer: [Per Ejeklint](https://github.com/ejeklint)
 
-[**hapi**](https://github.com/spumko/hapi) Bearer and Access Token authentication scheme
+_TODO: Update_
 
-Bearer authentication requires validating a token passed in by either the bearer authorization header, or by an access_token query parameter. The `'bearer-access-token'` scheme takes the following options:
+Parse Token authentication requires validating a token passed in. The `'bearer-access-token'` scheme takes the following options:
 
-- `validateFunc` - (required) a token lookup and validation function with the signature `function(token, callback)` where:
+- `validateFunc` - (optional) a token lookup and validation function with the signature `function(token, callback)` where:
     - `token` - the auth token received from the client.
     - `callback` - a callback function with the signature `function(err, isValid, credentials)` where:
         - `err` - an internal error.
@@ -66,4 +66,4 @@ server.start(function () {
 })
 ```
 
-License MIT @ John Brett 2014
+License MIT @ Per Ejeklint 2015
