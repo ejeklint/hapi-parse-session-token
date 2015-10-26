@@ -5,7 +5,7 @@ Lead Maintainer: [Per Ejeklint](https://github.com/ejeklint)
 
 _TODO: Update_
 
-Parse Token authentication requires validating a token passed in. The `'bearer-access-token'` scheme takes the following options:
+Parse Token authentication requires a session token passed in. The `'bearer-access-token'` scheme takes the following options:
 
 - `validateFunc` - (optional) a token lookup and validation function with the signature `function(token, callback)` where:
     - `token` - the auth token received from the client.
