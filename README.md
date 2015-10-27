@@ -3,18 +3,16 @@
 
 Lead Maintainer: [Per Ejeklint](https://github.com/ejeklint)
 
-_TODO: Update_
+A scheme for route authentication by validating the Parse session token against Parse's REST API. It requires valid Parse keys when configured and a session token passed in headers. This `'parse-access-token'` scheme takes the following options:
 
-Parse Token authentication requires valid Parse keys and a session token passed in. The `'parse-access-token'` scheme takes the following options:
-
-- `options` - (optional)
+- `options` - (required)
     - `parse_rest_api_key` (required) - the Parse REST API key.
     - `parse_app_id` (required) - the Parse App ID.
     - `validatedFunc` - (optional) function called after successful validation with the signature `function(credentials, callback)` where:
         - `credentials` - an object with the credentials received from Parse.
         - `callback` - a callback function with the signature `function(err, credentials)` where:
             - `err` - an internal error.
-            - `credentials` - a credentials object passed back to the application in `request.auth.credentials`.
+            - `credentials` - a credentials object passed back to the application in `request.auth.credentials`. If err is null, credentials must not be null.
 
 ```javascript
 var Hapi = require('hapi');
@@ -29,6 +27,7 @@ server.register(require('hapi-parse-session-token'), function (err) {
         parse_app_id: 'def456'
         validatedFunc: function( credentials, callback ) {
 
+            // Decorate the credentials
             credentials.extras = 'kilroy was here';
             
             callback(null, credentials)
