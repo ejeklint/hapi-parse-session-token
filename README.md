@@ -23,8 +23,8 @@ server.connection({ port: 3000 });
 server.register(require('hapi-parse-session-token'), function (err) {
 
     server.auth.strategy('parse', 'parse-access-token', {
-        parse_rest_api_key: 'abc123,
-        parse_app_id: 'def456'
+        parse_rest_api_key: 'abc123',
+        parse_app_id: 'def456',
         validatedFunc: function( credentials, callback ) {
 
             // Decorate the credentials
