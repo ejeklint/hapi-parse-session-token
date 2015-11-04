@@ -1,46 +1,48 @@
-var Lab = require('lab');
-var Code = require('code');
-var Hapi = require('hapi');
-var nock = require('nock');
-var lab = exports.lab = Lab.script();
+'use strict';
 
-var expect = Code.expect;
-var before = lab.before;
-var after = lab.after;
-var it = lab.it;
+const Lab = require('lab');
+const Hapi = require('hapi');
+const Code = require('code');
+const nock = require('nock');
+const lab = exports.lab = Lab.script();
+
+const expect = Code.expect;
+const before = lab.before;
+const after = lab.after;
+const it = lab.it;
 
 
-var defaultHandler = function (request, reply) {
+const defaultHandler = function (request, reply) {
 
     reply('success');
 };
 
 
-var defaultvalidatedFunc = function (credentials, callback) {
+const defaultvalidatedFunc = function (credentials, callback) {
 
     return callback(null, { credentials: credentials });
 };
 
 
-var alwaysErrorvalidatedFunc = function (credentials, callback) {
+const alwaysErrorvalidatedFunc = function (credentials, callback) {
 
     return callback({ Error:'Error' }, null);
 };
 
 
-var noCredentialsvalidatedFunc = function (credentials, callback) {
+const noCredentialsvalidatedFunc = function (credentials, callback) {
 
     return callback(null, null);
 };
 
 
-var server = new Hapi.Server({ debug: false });
+let server = new Hapi.Server({ debug: false });
 server.connection();
 
 
-before(function (done){
+before((done) => {
 
-    server.register(require('../'), function (err) {
+    server.register(require('../'), (err) => {
 
         expect(err).to.not.exist();
 
@@ -79,39 +81,16 @@ before(function (done){
 });
 
 
-after(function (done) {
+after((done) => {
 
     server = null;
     done();
 });
 
 
-it('returns 200 and success with correct parse token header set', function (done) {
+it('returns 200 and success with correct parse token header set', (done) => {
 
-    var request = { method: 'POST', url: '/basic', headers: { 'X-Parse-Session-Token': 'abcd1234' } };
-
-    nock('https://api.parse.com')
-        .get('/1/users/me')
-        .reply(200, {
-            'username': 'cooldude6',
-            'phone': '415-392-0202',
-            'createdAt': '2011-11-07T20:58:34.448Z',
-            'updatedAt': '2011-11-07T20:58:34.448Z',
-            'objectId': 'g7y9tkhB7O'
-        });
-
-    server.inject(request, function (res) {
-
-        expect(res.statusCode).to.equal(200);
-        expect(res.result).to.equal('success');
-        done();
-    });
-});
-
-
-it('returns 200 and success with correct parse token header set and no valid function', function (done) {
-
-    var request = { method: 'POST', url: '/basic_no_function', headers: { 'X-Parse-Session-Token': 'abcd1234' } };
+    const request = { method: 'POST', url: '/basic', headers: { 'X-Parse-Session-Token': 'abcd1234' } };
 
     nock('https://api.parse.com')
         .get('/1/users/me')
@@ -123,7 +102,7 @@ it('returns 200 and success with correct parse token header set and no valid fun
             'objectId': 'g7y9tkhB7O'
         });
 
-    server.inject(request, function (res) {
+    server.inject(request, (res) => {
 
         expect(res.statusCode).to.equal(200);
         expect(res.result).to.equal('success');
@@ -132,9 +111,32 @@ it('returns 200 and success with correct parse token header set and no valid fun
 });
 
 
-it('returns 401 when wrong parse token header set', function (done) {
+it('returns 200 and success with correct parse token header set and no valid function', (done) => {
 
-    var request = { method: 'POST', url: '/basic', headers: { 'X-Parse-Session-Token': 'attans' } };
+    const request = { method: 'POST', url: '/basic_no_function', headers: { 'X-Parse-Session-Token': 'abcd1234' } };
+
+    nock('https://api.parse.com')
+        .get('/1/users/me')
+        .reply(200, {
+            'username': 'cooldude6',
+            'phone': '415-392-0202',
+            'createdAt': '2011-11-07T20:58:34.448Z',
+            'updatedAt': '2011-11-07T20:58:34.448Z',
+            'objectId': 'g7y9tkhB7O'
+        });
+
+    server.inject(request, (res) => {
+
+        expect(res.statusCode).to.equal(200);
+        expect(res.result).to.equal('success');
+        done();
+    });
+});
+
+
+it('returns 401 when wrong parse token header set', (done) => {
+
+    const request = { method: 'POST', url: '/basic', headers: { 'X-Parse-Session-Token': 'attans' } };
 
     nock('https://api.parse.com')
         .get('/1/users/me')
@@ -142,7 +144,7 @@ it('returns 401 when wrong parse token header set', function (done) {
             'error': 'Unauthorized'
         });
 
-    server.inject(request, function (res) {
+    server.inject(request, (res) => {
 
         expect(res.statusCode).to.equal(401);
         done();
@@ -150,12 +152,9 @@ it('returns 401 when wrong parse token header set', function (done) {
 });
 
 
-it('returns 401 error with bearer token type of object (invalid token)', function (done) {
+it('returns 401 error with bearer token type of object (invalid token)', (done) => {
 
-    var headers = {};
-    headers['X-Parse-Session-Token'] = '{wrong: true}';
-
-    var request = { method: 'POST', url: '/basic', headers: headers };
+    const request = { method: 'POST', url: '/basic', headers: { 'X-Parse-Session-Token': '{wrong: true}' } };
 
     nock('https://api.parse.com')
         .get('/1/users/me')
@@ -163,7 +162,7 @@ it('returns 401 error with bearer token type of object (invalid token)', functio
             'error': 'Unauthorized'
         });
 
-    server.inject(request, function (res) {
+    server.inject(request, (res) => {
 
         expect(res.statusCode).to.equal(401);
         done();
@@ -171,9 +170,9 @@ it('returns 401 error with bearer token type of object (invalid token)', functio
 });
 
 
-it('returns 401 when wrong parse token header set', function (done) {
+it('returns 401 when wrong parse token header set', (done) => {
 
-    var request = { method: 'GET', url: '/basic_validate_error', headers: { 'X-Parse-Session-Token': 'attans' } };
+    const request = { method: 'GET', url: '/basic_validate_error', headers: { 'X-Parse-Session-Token': 'attans' } };
 
     nock('https://api.parse.com')
         .get('/1/users/me')
@@ -181,7 +180,7 @@ it('returns 401 when wrong parse token header set', function (done) {
             'error': 'Unauthorized'
         });
 
-    server.inject(request, function (res) {
+    server.inject(request, (res) => {
 
         expect(res.statusCode).to.equal(401);
         done();
@@ -189,15 +188,15 @@ it('returns 401 when wrong parse token header set', function (done) {
 });
 
 
-it('returns 500 when error', function (done) {
+it('returns 500 when error', (done) => {
 
-    var request = { method: 'POST', url: '/basic', headers: { 'X-Parse-Session-Token': 'abcd1234' } };
+    const request = { method: 'POST', url: '/basic', headers: { 'X-Parse-Session-Token': 'abcd1234' } };
 
     nock('https://api.parse.com')
         .get('/1/users/me')
         .replyWithError('Aaargh!');
 
-    server.inject(request, function (res) {
+    server.inject(request, (res) => {
 
         expect(res.statusCode).to.equal(500);
         done();
@@ -205,15 +204,15 @@ it('returns 500 when error', function (done) {
 });
 
 
-it('returns 500 when credentials are missing', function (done) {
+it('returns 500 when credentials are missing', (done) => {
 
-    var request = { method: 'GET', url: '/no_credentials', headers: { 'X-Parse-Session-Token': 'abcd1234' } };
+    const request = { method: 'GET', url: '/no_credentials', headers: { 'X-Parse-Session-Token': 'abcd1234' } };
 
     nock('https://api.parse.com')
         .get('/1/users/me')
         .reply(200, null);
 
-    server.inject(request, function (res) {
+    server.inject(request, (res) => {
 
         expect(res.statusCode).to.equal(500);
         done();
@@ -221,9 +220,9 @@ it('returns 500 when credentials are missing', function (done) {
 });
 
 
-it('returns 401 error when no Parse token is set', function (done) {
+it('returns 401 error when no Parse token is set', (done) => {
 
-    var request = { method: 'POST', url: '/basic' };
+    const request = { method: 'POST', url: '/basic' };
 
     nock('https://api.parse.com')
         .get('/1/users/me')
@@ -231,7 +230,7 @@ it('returns 401 error when no Parse token is set', function (done) {
             'error': 'Unauthorized'
         });
 
-    server.inject(request, function (res) {
+    server.inject(request, (res) => {
 
         expect(res.statusCode).to.equal(401);
         done();
