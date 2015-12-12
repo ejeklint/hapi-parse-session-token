@@ -1,7 +1,7 @@
 {
   "name": "hapi-parse-session-token",
   "description": "Simple Parse session token validation plugin for hapi.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Per Ejeklint <ejeklint@me.com> (http://www.ejeklint.se)",
   "repository": {
     "type": "git",
