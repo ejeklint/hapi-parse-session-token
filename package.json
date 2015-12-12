@@ -38,7 +38,7 @@
     "nock": "^2.0.0"
   },
   "scripts": {
-    "test": "lab -a code -c -L"
+    "test": "lab -a code -c"
   },
   "bugs": {
     "url": "https://github.com/ejeklint/hapi-parse-session-token/issues"
